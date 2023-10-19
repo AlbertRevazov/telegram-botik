@@ -45,13 +45,11 @@ bot.command("nextgame", async (ctx) => {
       // we get the date in the format we need yyyy-mm-dd
       game?.utcDate.toString().split("T")[0]
       // and get the time in the format hh:mm
-    } --- ${game?.utcDate
-      .toString()
-      .split("T")[1]
-      .substring(
-        0,
-        5
-      )}\n${home} - ${away}\n\nОтправьте /head2head что бы посмотреть историю противостояния этих команд`;
+    } --- ${game?.utcDate.toString().split("T")[1].substring(0, 5)}\n${
+      home?.name
+    } - ${
+      away?.name
+    }\n\nОтправьте /head2head что бы посмотреть историю противостояния этих команд`;
 
     return ctx.reply(message);
   } catch (error) {
