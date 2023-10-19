@@ -4,6 +4,7 @@ export interface IGame {
   };
   utcDate: string;
   matchday: number;
+  id: number;
   homeTeam: {
     name: string;
     shortName: string;
@@ -26,4 +27,43 @@ export interface IScorer {
   };
   goals: number;
   assists: number;
+}
+export interface IStandings {
+  position: number;
+  team: {
+    id: number;
+    name: string;
+  };
+  points: number;
+}
+export interface ISquad {
+  name: string;
+  position: string;
+}
+
+export interface IHead2Head {
+  resultSet: {
+    count: number;
+    competitions: string;
+    first: string;
+    last: string;
+  };
+  aggregates: {
+    numberOfMatches: number;
+    totalGoals: number;
+    homeTeam: {
+      id: number;
+      name: string;
+      wins: number;
+      draws: number;
+      losses: number;
+    };
+    awayTeam: {
+      id: number;
+      name: string;
+      wins: number;
+      draws: number;
+      losses: number;
+    };
+  };
 }
