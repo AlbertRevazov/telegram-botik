@@ -157,6 +157,7 @@ bot.command("squad", async (ctx) => {
   try {
     let squad: ISquad[] = [];
     let message = "";
+
     if (!squad.length) {
       const options = {
         headers: { "X-Auth-Token": "1bb65d5d077f4ccba1280a3735cb9242" },
@@ -166,6 +167,7 @@ bot.command("squad", async (ctx) => {
         .then((response) => response.json())
         .then((response) => (squad = response.squad));
     }
+
     for (let i = 0; i < squad.length; i++) {
       // console.log(squad[i].position);
 
