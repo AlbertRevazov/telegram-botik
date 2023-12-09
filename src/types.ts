@@ -3,6 +3,7 @@ export interface IGame {
     name: string;
   };
   utcDate: string;
+  status: string;
   matchday: number;
   id: number;
   homeTeam: {

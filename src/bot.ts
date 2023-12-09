@@ -203,11 +203,11 @@ const defaultReply = async (ctx: any) => {
 
     if (head) {
       const { homeTeam, awayTeam, numberOfMatches } = head?.aggregates;
-      const home = `${homeTeam.name} wins - ${homeTeam.wins} draws - ${homeTeam.draws} losses - ${homeTeam.losses}`;
-      const awai = `${awayTeam.name} wins - ${awayTeam.wins} draws - ${awayTeam.draws} losses - ${awayTeam.losses}`;
-      const message = `Последние ${numberOfMatches} матчей с участием этих команд:\n ${home}\n${awai}`;
+      const juve = homeTeam.name === "Juventus FC" ? homeTeam : awayTeam;
+      const anotherTeam = homeTeam.name !== "Juventus FC" ? homeTeam : awayTeam;
 
-      return await ctx.reply(message);
+      const result = `В последних ${numberOfMatches} матчах у Юве против ${anotherTeam.name} \n${juve.wins} побед ${juve.draws} ничей ${juve.losses} поражений `;
+      return await ctx.reply(result);
     } else {
       return ctx.reply("Для начала нужно узнать с кем игра..");
     }
