@@ -9,10 +9,12 @@ export interface IGame {
   homeTeam: {
     name: string;
     shortName: string;
+    id: number;
   };
   awayTeam: {
     name: string;
     shortName: string;
+    id: number;
   };
   score: {
     fullTime: { home: null | number; away: null | number };
