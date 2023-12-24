@@ -4,6 +4,7 @@ import { IGame, IHead2Head, IScorer, ISquad, IStandings } from "./types";
 import { Bot, webhookCallback } from "grammy";
 import express from "express";
 import fetch from "node-fetch";
+import schedule from "node-schedule";
 
 // Create a bot using the Telegram token
 const bot = new Bot(process.env.TELEGRAM_TOKEN || "");
@@ -11,22 +12,41 @@ const bot = new Bot(process.env.TELEGRAM_TOKEN || "");
 bot.api.setMyCommands(commands);
 
 // global variable for the request head2head
+let game: IGame | undefined;
 let headId: number | undefined;
 let previousId: number | undefined;
+
 const today = new Date().toISOString().split("T")[0];
 // Handle the /start command to greet the user
 bot.command("start", (ctx) => {
   const name = ctx.from?.first_name;
+  const matchDay = game?.utcDate?.toString().split("T")[0];
+
   ctx.reply(`Здраствуйте ${name} 🫡, это Бот с календарем игр Ювентуса на сезон 2022/2023
   \nHello ${name} 🫡, this is a Bot with the Juventus games calendar for the 2022/2023 season`);
+
+  schedule.scheduleJob("00 00 12 * * 0-6", async () => {
+    const options = {
+      headers: { "X-Auth-Token": "1bb65d5d077f4ccba1280a3735cb9242" },
+    };
+    await fetch(
+      `https://api.football-data.org/v4/teams/109/matches?dateFrom=${today}&dateTo=2024-09-29&?limit=1`,
+      options
+    )
+      .then((response) => response.json())
+      .then((response) => (game = response.matches[0]));
+
+    if (today === matchDay) {
+      ctx.reply(`Сегодня день Игры`);
+    } else {
+      ctx.reply("Еще одинь день без футбола");
+    }
+  });
 });
 
 bot.command("nextgame", async (ctx) => {
   try {
-    let game: IGame | undefined;
-
     if (!game?.matchday) {
-      const today = new Date().toISOString().split("T")[0];
       const options = {
         headers: { "X-Auth-Token": "1bb65d5d077f4ccba1280a3735cb9242" },
       };
@@ -233,7 +253,6 @@ const defaultReply = async (ctx: any) => {
             (previous = response.matches[response.matches.length - 1])
         );
     }
-    console.log(previous);
 
     if (previous?.matchday) {
       const { away, home } = previous?.score?.fullTime;
@@ -245,7 +264,7 @@ const defaultReply = async (ctx: any) => {
 
       return ctx.reply(message);
     } else {
-      return ctx.reply("Длгра..");
+      return ctx.reply("Для начала нужно узнать с кем игра..");
     }
   }
   await ctx.reply(`Очень интересно... 🤔, ничего не понял `);

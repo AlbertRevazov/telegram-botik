@@ -104,6 +104,13 @@
     "@types/node" "*"
     form-data "^3.0.0"
 
+"@types/node-schedule@^2.1.5":
+  version "2.1.5"
+  resolved "https://registry.npmjs.org/@types/node-schedule/-/node-schedule-2.1.5.tgz"
+  integrity sha512-bN0MiplDBUxNMmlEi4iykjLYD7+Ze3DEevzliCn8WYuDwYSPj/5XFh8wZw+YXPLpLxiNWlIONYiQ67g/vowSMA==
+  dependencies:
+    "@types/node" "*"
+
 "@types/node@*", "@types/node@^18.11.7":
   version "18.11.10"
   resolved "https://registry.npmjs.org/@types/node/-/node-18.11.10.tgz"
@@ -304,6 +311,13 @@ create-require@^1.1.0:
   version "1.1.1"
   resolved "https://registry.npmjs.org/create-require/-/create-require-1.1.1.tgz"
   integrity sha512-dcKFX3jn0MpIaXjisoRvexIJVEKzaq7z2rZKxf+MSr9TkdmHmsU4m2lcLojrj/FHl8mk5VxMmYA+ftRkP/3oKQ==
+
+cron-parser@^4.2.0:
+  version "4.9.0"
+  resolved "https://registry.npmjs.org/cron-parser/-/cron-parser-4.9.0.tgz"
+  integrity sha512-p0SaNjrHOnQeR8/VnfGbmg9te2kfyYSQ7Sc/j/6DtPL3JQvKxmjO9TSjNFpujqV3vEYYBvNNvXSxzyksBWAx1Q==
+  dependencies:
+    luxon "^3.2.1"
 
 cross-spawn@^7.0.0:
   version "7.0.3"
@@ -601,6 +615,16 @@ lodash@^4.17.21:
   resolved "https://registry.npmjs.org/lodash/-/lodash-4.17.21.tgz"
   integrity sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==
 
+long-timeout@0.1.1:
+  version "0.1.1"
+  resolved "https://registry.npmjs.org/long-timeout/-/long-timeout-0.1.1.tgz"
+  integrity sha512-BFRuQUqc7x2NWxfJBCyUrN8iYUYznzL9JROmRz1gZ6KlOIgmoD+njPVbb+VNn2nGMKggMsK79iUNErillsrx7w==
+
+luxon@^3.2.1:
+  version "3.4.4"
+  resolved "https://registry.npmjs.org/luxon/-/luxon-3.4.4.tgz"
+  integrity sha512-zobTr7akeGHnv7eBOXcRgMeCP6+uyYsczwmeRCauvpvaAltgNyTbLH/+VaEAPUeWBT+1GuNmz4wC/6jtQzbbVA==
+
 make-error@^1.1.1:
   version "1.3.6"
   resolved "https://registry.npmjs.org/make-error/-/make-error-1.3.6.tgz"
@@ -681,6 +705,15 @@ node-fetch@^2.7.0:
   integrity sha512-c4FRfUm/dbcWZ7U+1Wq0AwCyFL+3nt2bEw05wfxSz+DWpWsitgmSgYmy2dQdWyKC1694ELPqMs/YzUSNozLt8A==
   dependencies:
     whatwg-url "^5.0.0"
+
+node-schedule@^2.1.1:
+  version "2.1.1"
+  resolved "https://registry.npmjs.org/node-schedule/-/node-schedule-2.1.1.tgz"
+  integrity sha512-OXdegQq03OmXEjt2hZP33W2YPs/E5BcFQks46+G2gAxs4gHOIVD1u7EqlYLYSKsaIpyKCK9Gbk0ta1/gjRSMRQ==
+  dependencies:
+    cron-parser "^4.2.0"
+    long-timeout "0.1.1"
+    sorted-array-functions "^1.3.0"
 
 normalize-path@^3.0.0, normalize-path@~3.0.0:
   version "3.0.0"
@@ -853,6 +886,11 @@ side-channel@^1.0.4:
     call-bind "^1.0.0"
     get-intrinsic "^1.0.2"
     object-inspect "^1.9.0"
+
+sorted-array-functions@^1.3.0:
+  version "1.3.0"
+  resolved "https://registry.npmjs.org/sorted-array-functions/-/sorted-array-functions-1.3.0.tgz"
+  integrity sha512-2sqgzeFlid6N4Z2fUQ1cvFmTOLRi/sEDzSQ0OKYchqgoPmQBVyM3959qYx3fpS6Esef80KjmpgPeEr028dP3OA==
 
 source-map-support@^0.5.12:
   version "0.5.21"

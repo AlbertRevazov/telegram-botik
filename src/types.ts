@@ -1,8 +1,20 @@
+import {
+  RecurrenceRule,
+  RecurrenceSpecDateRange,
+  RecurrenceSpecObjLit,
+} from "node-schedule";
+
 export interface IGame {
   competition: {
     name: string;
   };
-  utcDate: string;
+  utcDate:
+    | string
+    | number
+    | Date
+    | RecurrenceRule
+    | RecurrenceSpecDateRange
+    | RecurrenceSpecObjLit;
   status: string;
   matchday: number;
   id: number;
