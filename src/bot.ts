@@ -17,29 +17,38 @@ let headId: number | undefined;
 let previousId: number | undefined;
 
 const today = new Date().toISOString().split("T")[0];
-// Handle the /start command to greet the user
+// Handle the /start command to greet the user 00 00 12 * * 0-6
 bot.command("start", (ctx) => {
   const name = ctx.from?.first_name;
-  const matchDay = game?.utcDate?.toString().split("T")[0];
+  let gamer: any;
+  ctx.reply(`Здраствуйте ${name} 🫡, это Бот с календарем игр Ювентуса
+  \nHello ${name} 🫡, this is a Bot with the Juventus games calendar`);
 
-  ctx.reply(`Здраствуйте ${name} 🫡, это Бот с календарем игр Ювентуса на сезон 2022/2023
-  \nHello ${name} 🫡, this is a Bot with the Juventus games calendar for the 2022/2023 season`);
+  schedule.scheduleJob("* * */1 * * *", async () => {
+    console.log(gamer, "ppp");
 
-  schedule.scheduleJob("00 00 12 * * 0-6", async () => {
-    const options = {
-      headers: { "X-Auth-Token": "1bb65d5d077f4ccba1280a3735cb9242" },
-    };
-    await fetch(
-      `https://api.football-data.org/v4/teams/109/matches?dateFrom=${today}&dateTo=2024-09-29&?limit=1`,
-      options
-    )
-      .then((response) => response.json())
-      .then((response) => (game = response.matches[0]));
+    // if (game?.matchday) {
+      const options = {
+        headers: { "X-Auth-Token": "1bb65d5d077f4ccba1280a3735cb9242" },
+      };
+      await fetch(
+        `https://api.football-data.org/v4/teams/109/matches?dateFrom=${today}&dateTo=2024-09-29&?limit=1`,
+        options
+      )
+        .then((response) => response.json())
+        .then((response) => (gamer = response?.matches[0]));
 
-    if (today === matchDay) {
-      ctx.reply(`Сегодня день Игры`);
+      const matchDay = game?.utcDate?.toString().split("T")[0];
+      console.log(matchDay, today);
+    // }
+    console.log(gamer, "er");
+
+    if (matchDay) {
+    ctx.reply(`Сегодня день Игры`);
+    console.log("yep");
     } else {
-      ctx.reply("Еще одинь день без футбола");
+    console.log("nope");
+    ctx.reply("Еще одинь день без футбола");
     }
   });
 });
