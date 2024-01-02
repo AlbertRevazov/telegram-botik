@@ -1,7 +1,13 @@
-import { formatedDate, formatedTime } from "./utils";
+import { dayOfTheMatch, formatedDate, formatedTime } from "./utils";
 import { commands } from "./data";
 import { IGame, IHead2Head, IScorer, ISquad, IStandings } from "./types";
-import { Bot, webhookCallback } from "grammy";
+import {
+  Bot,
+  CommandContext,
+  Context,
+  NextFunction,
+  webhookCallback,
+} from "grammy";
 import express from "express";
 import fetch from "node-fetch";
 import schedule from "node-schedule";
@@ -18,38 +24,14 @@ let previousId: number | undefined;
 
 const today = new Date().toISOString().split("T")[0];
 // Handle the /start command to greet the user 00 00 12 * * 0-6
+
 bot.command("start", (ctx) => {
   const name = ctx.from?.first_name;
-  let gamer: any;
+
   ctx.reply(`Здраствуйте ${name} 🫡, это Бот с календарем игр Ювентуса
   \nHello ${name} 🫡, this is a Bot with the Juventus games calendar`);
-
-  schedule.scheduleJob("* * */1 * * *", async () => {
-    console.log(gamer, "ppp");
-
-    // if (game?.matchday) {
-      const options = {
-        headers: { "X-Auth-Token": "1bb65d5d077f4ccba1280a3735cb9242" },
-      };
-      await fetch(
-        `https://api.football-data.org/v4/teams/109/matches?dateFrom=${today}&dateTo=2024-09-29&?limit=1`,
-        options
-      )
-        .then((response) => response.json())
-        .then((response) => (gamer = response?.matches[0]));
-
-      const matchDay = game?.utcDate?.toString().split("T")[0];
-      console.log(matchDay, today);
-    // }
-    console.log(gamer, "er");
-
-    if (matchDay) {
-    ctx.reply(`Сегодня день Игры`);
-    console.log("yep");
-    } else {
-    console.log("nope");
-    ctx.reply("Еще одинь день без футбола");
-    }
+  schedule.scheduleJob("0 12 * * ?", async () => {
+    return ctx.reply(await dayOfTheMatch({ game, today }));
   });
 });
 
@@ -215,8 +197,8 @@ bot.command("squad", async (ctx) => {
   }
 });
 
-const defaultReply = async (ctx: any) => {
-  if (ctx.message.text === "/head2head") {
+const defaultReply = async (ctx: Context, next: NextFunction) => {
+  if (ctx.message?.text === "/head2head") {
     let head: IHead2Head | undefined;
 
     if (headId) {
@@ -243,7 +225,7 @@ const defaultReply = async (ctx: any) => {
       return ctx.reply("Для начала нужно узнать с кем игра..");
     }
   }
-  if (ctx.message.text === "/previous") {
+  if (ctx.message?.text === "/previous") {
     let previous: IGame | undefined;
 
     if (previousId) {
@@ -280,9 +262,14 @@ const defaultReply = async (ctx: any) => {
   await ctx.replyWithPhoto(
     "https://assets-cms.thescore.com/uploads/image/file/473233/w1280xh966_GettyImages-1235259897.jpg?ts=1632233179"
   );
+  return next();
 };
 
-bot.on("message", defaultReply);
+bot.on("message", defaultReply, (ctx: Context) => {
+  schedule.scheduleJob("0 12 * * ?", async () => {
+    return ctx.reply(await dayOfTheMatch({ game, today }));
+  });
+});
 
 if (process.env.NODE_ENV === "production") {
   // Use Webhooks for the production server
