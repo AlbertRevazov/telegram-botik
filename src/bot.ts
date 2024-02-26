@@ -4,7 +4,6 @@ import { IGame, IHead2Head, IScorer, ISquad, IStandings } from "./types";
 import { Bot, Context, NextFunction, webhookCallback } from "grammy";
 import express from "express";
 import fetch from "node-fetch";
-import schedule from "node-schedule";
 
 // Create a bot using the Telegram token
 const bot = new Bot(process.env.TELEGRAM_TOKEN || "");
@@ -20,20 +19,19 @@ const today = new Date().toISOString().split("T")[0];
 // Handle the /start command to greet the user 00 00 12 * * 0-6
 
 bot.command("start", (ctx) => {
-  const name = ctx.from?.first_name;
+  console.log(ctx.from?.username, "====");
 
+  const name = ctx.from?.first_name;
+  if (ctx.from?.username === "Azamat_dzagoi") {
+    return ctx.reply(
+      `Салам Гады, Манан ус най, манан похуй у, доместоса хугаева 10 или 12`
+    );
+  }
+  if (ctx.from?.username === "MaratEsiev") {
+    return ctx.reply(`Салам кинконганенок шыта факусыс?, индонезия китай`);
+  }
   ctx.reply(`Здраствуйте ${name} 🫡, это Бот с календарем игр Ювентуса
   \nHello ${name} 🫡, this is a Bot with the Juventus games calendar`);
-});
-
-bot.command("reminders", async (ctx) => {
-  return RemindersGame(
-    {
-      game,
-      today: today || new Date().toISOString().split("T")[0],
-    },
-    ctx
-  );
 });
 
 bot.command("nextgame", async (ctx) => {
@@ -275,15 +273,19 @@ if (process.env.NODE_ENV === "production") {
   app.use(express.json());
   app.use(webhookCallback(bot, "express"));
 
-  // bot.command("reminders", (ctx) => {
-  //   return RemindersGame(
-  //     {
-  //       game,
-  //       today: today || new Date().toISOString().split("T")[0],
-  //     },
-  //     ctx
-  //   );
-  // });
+  app.use("/reminders", (req, res) => {
+    try {
+      bot.on("message", (ctx: Context) => {
+        return RemindersGame(
+          {
+            game,
+            today: today || new Date().toISOString().split("T")[0],
+          },
+          ctx
+        );
+      });
+    } catch (error) {}
+  });
 
   const PORT = process.env.PORT || 3000;
   app.listen(PORT, () => {
