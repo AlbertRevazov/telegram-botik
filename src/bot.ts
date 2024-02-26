@@ -275,15 +275,15 @@ if (process.env.NODE_ENV === "production") {
   app.use(express.json());
   app.use(webhookCallback(bot, "express"));
 
-  bot.command("reminders", (ctx) => {
-    return RemindersGame(
-      {
-        game,
-        today: today || new Date().toISOString().split("T")[0],
-      },
-      ctx
-    );
-  });
+  // bot.command("reminders", (ctx) => {
+  //   return RemindersGame(
+  //     {
+  //       game,
+  //       today: today || new Date().toISOString().split("T")[0],
+  //     },
+  //     ctx
+  //   );
+  // });
 
   const PORT = process.env.PORT || 3000;
   app.listen(PORT, () => {
