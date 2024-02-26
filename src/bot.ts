@@ -1,13 +1,7 @@
-import { dayOfTheMatch, formatedDate, formatedTime } from "./utils";
+import { RemindersGame, formatedDate, formatedTime } from "./utils";
 import { commands } from "./data";
 import { IGame, IHead2Head, IScorer, ISquad, IStandings } from "./types";
-import {
-  Bot,
-  CommandContext,
-  Context,
-  NextFunction,
-  webhookCallback,
-} from "grammy";
+import { Bot, Context, NextFunction, webhookCallback } from "grammy";
 import express from "express";
 import fetch from "node-fetch";
 import schedule from "node-schedule";
@@ -30,9 +24,16 @@ bot.command("start", (ctx) => {
 
   ctx.reply(`Здраствуйте ${name} 🫡, это Бот с календарем игр Ювентуса
   \nHello ${name} 🫡, this is a Bot with the Juventus games calendar`);
-  schedule.scheduleJob("0 12 * * ?", async () => {
-    return ctx.reply(await dayOfTheMatch({ game, today }));
-  });
+});
+
+bot.command("reminders", async (ctx) => {
+  return RemindersGame(
+    {
+      game,
+      today: today || new Date().toISOString().split("T")[0],
+    },
+    ctx
+  );
 });
 
 bot.command("nextgame", async (ctx) => {
@@ -265,17 +266,20 @@ const defaultReply = async (ctx: Context, next: NextFunction) => {
   return next();
 };
 
-bot.on("message", defaultReply, (ctx: Context) => {
-  schedule.scheduleJob("0 12 * * ?", async () => {
-    return ctx.reply(await dayOfTheMatch({ game, today }));
-  });
-});
+bot.on("message", defaultReply, (ctx: Context) => {});
 
 if (process.env.NODE_ENV === "production") {
   // Use Webhooks for the production server
   const app = express();
   app.use(express.json());
   app.use(webhookCallback(bot, "express"));
+
+  bot.command("start", (ctx) => {
+    const name = ctx.from?.first_name;
+
+    ctx.reply(`Здраствуйте ${name} 🫡, это Бот с календарем игр Ювентуса
+    \nHello ${name} 🫡, this is a Bot with the Juventus games calendar`);
+  });
 
   const PORT = process.env.PORT || 3000;
   app.listen(PORT, () => {

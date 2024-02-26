@@ -10,6 +10,7 @@ export const commands = [
   { command: "scorers", description: "Список бомбардиров Серии А" },
   { command: "standings", description: "Турнирная таблица Серии А" },
   { command: "squad", description: "Состав Юве" },
+  { command: "reminders", description: "Напоминания от бота в день игры" },
 ];
 
 interface data {}
