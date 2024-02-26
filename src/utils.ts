@@ -27,6 +27,7 @@ interface iDayOfMatchProps {
   game: IGame | undefined;
   today: string;
 }
+
 export const dayOfTheMatch = async ({ game, today }: iDayOfMatchProps) => {
   try {
     const matchDay = game?.utcDate?.toString().split("T")[0];
