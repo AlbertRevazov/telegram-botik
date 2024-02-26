@@ -48,13 +48,11 @@ export const RemindersGame = async (
         )
           .then((response) => response.json())
           .then((response) => (game = response?.matches[0]));
-          
       }
 
-      if (matchDay !== today) {
+      if (matchDay === today) {
         return ctx.reply(`Сегодня день Игры`);
       } else {
-        console.log("nope");
         return ctx.reply("Еще одинь день без футбола");
       }
     } catch (error) {

@@ -48,8 +48,10 @@ export interface IStandings {
   team: {
     id: number;
     name: string;
+    tla: string;
   };
   points: number;
+  playedGames: number;
 }
 export interface ISquad {
   name: string;

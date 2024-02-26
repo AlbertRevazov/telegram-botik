@@ -160,7 +160,8 @@ bot.command("standings", async (ctx) => {
 
     const message = table?.reduce(
       (acc, team) =>
-        acc + `${team.position} ${team.team.name} - ${team.points} points\n`,
+        acc +
+        `${team.team.tla} - ${team.points} pts ${team.playedGames} games\n`,
       ""
     );
 
@@ -274,11 +275,14 @@ if (process.env.NODE_ENV === "production") {
   app.use(express.json());
   app.use(webhookCallback(bot, "express"));
 
-  bot.command("start", (ctx) => {
-    const name = ctx.from?.first_name;
-
-    ctx.reply(`Здраствуйте ${name} 🫡, это Бот с календарем игр Ювентуса
-    \nHello ${name} 🫡, this is a Bot with the Juventus games calendar`);
+  bot.command("reminders", (ctx) => {
+    return RemindersGame(
+      {
+        game,
+        today: today || new Date().toISOString().split("T")[0],
+      },
+      ctx
+    );
   });
 
   const PORT = process.env.PORT || 3000;
