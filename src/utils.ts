@@ -48,6 +48,7 @@ export const RemindersGame = async (
         )
           .then((response) => response.json())
           .then((response) => (game = response?.matches[0]));
+          
       }
 
       if (matchDay !== today) {
