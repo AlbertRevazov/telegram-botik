@@ -2,6 +2,7 @@ import { RemindersGame, formatedDate, formatedTime } from "./utils";
 import { commands } from "./data";
 import { IGame, IHead2Head, IScorer, ISquad, IStandings } from "./types";
 import { Bot, Context, NextFunction, webhookCallback } from "grammy";
+import { Router } from "express";
 import express from "express";
 import fetch from "node-fetch";
 
@@ -19,8 +20,6 @@ const today = new Date().toISOString().split("T")[0];
 // Handle the /start command to greet the user 00 00 12 * * 0-6
 
 bot.command("start", (ctx) => {
-  console.log(ctx.from?.username, "====");
-
   const name = ctx.from?.first_name;
   if (ctx.from?.username === "Azamat_dzagoi") {
     return ctx.reply(
@@ -270,12 +269,15 @@ bot.on("message", defaultReply, (ctx: Context) => {});
 if (process.env.NODE_ENV === "production") {
   // Use Webhooks for the production server
   const app = express();
+  const router = Router();
   app.use(express.json());
   app.use(webhookCallback(bot, "express"));
 
-  app.use("/reminders", (req, res) => {
+  router.use("/reminders", (req, res) => {
     try {
       bot.on("message", (ctx: Context) => {
+        console.log();
+
         return RemindersGame(
           {
             game,
@@ -284,7 +286,10 @@ if (process.env.NODE_ENV === "production") {
           ctx
         );
       });
-    } catch (error) {}
+      bot.drop;
+    } catch (error) {
+      console.log(error);
+    }
   });
 
   const PORT = process.env.PORT || 3000;
